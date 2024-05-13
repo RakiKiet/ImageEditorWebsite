@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./image/5996831.png">
+    <link rel="stylesheet" href="style.css">
+    <title>Image Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/dist/cropper.css">
+    <link rel="stylesheet" href="/dist/cropper.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body>
+    <div class="crop-area" style="z-index: 1000;">
+        <div id="img-container">
+            <img id="image" src="" alt="">
+        </div>
+        <button class="btn-primary btn btn-crop" id="crop">Crop</button>
+        <div data-bs-theme="dark">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="wrapper">
+        <form enctype="multipart/form-data" class="px-3 pt-3">
+            <div class="mb-3">
+                <input class="form-control" type="file" id="file-input">
+            </div>
+            <div class="mb-3">
+                <input class="btn-primary btn px-4" type="button" id="downloadBtn" value="Download">
+            </div>
+        </form>
+        <div class="img-area">
+            <img id="mainImage" src="./image/image-placeholder.svg" alt="preview-img">
+        </div>
+
+        <!--  -->
+        <div class="button-control center option">
+            <div data-toggle="tooltip" data-placement="top" title="Crop" class="toolbar-item">
+                <button class="btn-icon btn" id="crop-btn"><i class="fa-solid fa-crop"></i></button>
+            </div>
+            <div class="border"></div>
+            <div data-toggle="tooltip" data-placement="top" title="Rotate left" class="toolbar-item">
+                <button class="btn-icon btn option" id="left"><i class="fa-solid fa-rotate-left"></i></button>
+            </div>
+            <div data-toggle="tooltip" data-placement="top" title="Rotate right" class="toolbar-item">
+                <button class="btn-icon btn option" id="right"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+            <div class="border"></div>
+            <div data-toggle="tooltip" data-placement="top" title="Flip horizontal" class="toolbar-item">
+                <button class="btn-icon btn option" id="horizontal"><span class="rotate-90 material-symbols-outlined">
+                        vertical_align_center
+                    </span></button>
+            </div>
+            <div data-toggle="tooltip" data-placement="top" title="Flip vertical" class="toolbar-item">
+                <button class="btn-icon btn option" id="vertical"><span class="material-symbols-outlined">
+                        vertical_align_center
+                    </span></button>
+            </div>
+            <div class="border"></div>
+            <div data-toggle="tooltip" data-placement="top" title="Draw" class="toolbar-item" class="btn">
+                <button class="btn-icon  btn" id="draw"><span class="material-symbols-outlined">
+                        draw
+                    </span></button>
+            </div>
+            <div data-toggle="tooltip" data-placement="top" title="Reset filter" class="toolbar-item" class="btn">
+                <button class="btn-icon btn" id="reset"><span class="material-symbols-outlined">
+                        restart_alt
+                    </span></button>
+            </div>
+        </div>
+        <!-- template
+        <div class="template-section mb-5">
+            <div id="carouselExampleDark" class="carousel carousel slide hide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="5"
+                        aria-label="Slide 6"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="6"
+                        aria-label="Slide 7"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="7"
+                        aria-label="Slide 8"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="8"
+                        aria-label="Slide 9"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="9"
+                        aria-label="Slide 10"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item w-100 active">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>Vintage look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>cool blue tone</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>warm tone</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>high contrast black and white effect</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>faded look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>darkened look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>lightened look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>dreamy look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>strong sepia tone</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item w-100">
+                        <img src="" class="d-block innerImage" alt="...">
+                        <div class="carousel-caption d-block d-md-block">
+                            <h5>radical look</h5>
+                            <p>Nhấn vào hình để dùng filter này</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div> -->
+
+        <div class="filter-section pt-2 center">
+            <div data-toggle="tooltip" data-placement="top" title="Adjust the filter manually" class="manual-filter"
+                style="display: inline-block;">
+                <button style="padding: 0 !important;" class="btn btn-icon" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScrolling2" aria-controls="offcanvasScrolling2"><span
+                        class="material-symbols-outlined">
+                        page_info
+                    </span></button>
+
+            </div>
+            <div data-toggle="tooltip" data-placement="top" title="Adjust the filter with template"
+                class="template-filter" style="display: inline-block;">
+                <p style="padding: 19px 0 0 0 !important;">
+                    <button style="padding: 0 !important;" class="btn btn-icon moveDown" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false">
+                        <span class="material-symbols-outlined">
+                            camera
+                        </span>
+                    </button>
+                </p>
+            </div>
+        </div>
+
+        <!-- filter -->
+
+        <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+            id="offcanvasScrolling2" aria-labelledby="offcanvasScrolling2Label">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasScrolling2Label">Change any filter you need!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <!-- edit filter -->
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="1" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+                                aria-controls="collapseOne">
+                                Brightness
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                            style="">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="brightness" min="0" max="200">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="2" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo">
+                                Saturation
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="saturation" min="0" max="200">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="3" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                                aria-controls="collapseThree">
+                                blur
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="blur" min="0" max="25">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="4" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                                aria-controls="collapseFour">
+                                Inversion
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="inversion" min="0" max="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="5" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                                aria-controls="collapseFive">
+                                Hue rotate
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="hue-rotate" min="0" max="360">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="6" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
+                                aria-controls="collapseSix">
+                                Sepia
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="sepia" min="0" max="100"
+                                    value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="7" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false"
+                                aria-controls="collapseSeven">
+                                Gray scale
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="gray-scale" min="0" max="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-accordion-btn="8" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false"
+                                aria-controls="collapseEight">
+                                Contrast
+                                <span class="after"></span>
+                            </button>
+                        </h2>
+                        <div id="collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input class="tool-input form-range" type="range" id="contrast" min="0" max="300"
+                                    value="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="min-height: 0px;">
+            <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                <div class="card card-body" style="min-width: 0px;">
+                    <!-- template -->
+                    <div class="template-section">
+                        <div id="carouselExampleDark" class="carousel carousel-dark slide hide">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3"
+                                    aria-label="Slide 4"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4"
+                                    aria-label="Slide 5"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="5"
+                                    aria-label="Slide 6"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="6"
+                                    aria-label="Slide 7"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="7"
+                                    aria-label="Slide 8"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="8"
+                                    aria-label="Slide 9"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="9"
+                                    aria-label="Slide 10"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="10"
+                                    aria-label="Slide 11"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="11"
+                                    aria-label="Slide 12"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="12"
+                                    aria-label="Slide 13"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="13"
+                                    aria-label="Slide 14"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="14"
+                                    aria-label="Slide 14"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="15"
+                                    aria-label="Slide 14"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="16"
+                                    aria-label="Slide 17"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="17"
+                                    aria-label="Slide 18"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="18"
+                                    aria-label="Slide 19"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item w-100 active">
+                                    <img src="" onclick="choiseFilter(0)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>1977</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(1)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Aden</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(2)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Amaro</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(3)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Brannan</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(4)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Brooklyn</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(5)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Clarendon</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(6)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Earlybird</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(7)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Gingham</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(8)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Hudson</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(9)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Inkwell</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(10)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Lofi</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(11)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Maven</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(12)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Perpetua</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(13)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Reyes</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(14)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Stinson</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(15)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Toaster</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(16)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Walden</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(17)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Valencia</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item w-100">
+                                    <img src="" onclick="choiseFilter(18)" class="d-block innerImage" alt="...">
+                                    <div class="carousel-caption d-block d-md-block">
+                                        <h5>Xpro2</h5>
+                                        <p>Nhấn vào hình để dùng filter này</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- drawing on image -->
+    <div class="drawing-area-background">
+        <div id="drawing-area">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div class="tool-bar row">
+            <div class="tools col-xl-5 col-md-12 mb-2">
+                <div data-toggle="tooltip" data-placement="top" title="Select" class=" tool select">
+                    <img src="./image/pointer.svg" alt="">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Draw" class=" tool draw">
+                    <img src="./image/pencil.svg" alt="">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Text" class=" tool text">
+                    <img src="./image/type.svg" alt="" srcset="">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Shape" class=" tool shape"><img
+                        src="./image/shape.svg" alt=""></div>
+                <div data-toggle="tooltip" data-placement="top" title="Color" class=" tool color">
+                    <input type="color" class="color-picker" value="#4285f4">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Delete" class=" tool delete"
+                    onclick="deleteObject()">
+                    <img src="https://www.autodraw.com/assets/images/icons/tools/delete.svg" alt="">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Save" class=" tool save">
+                    <img style="width: 20px; height: 20px;" src="https://www.svgrepo.com/show/521819/save.svg" alt="">
+                </div>
+                <div data-toggle="tooltip" data-placement="top" title="Exit" class=" tool exit" ">
+                    <img style=" width: 20px; height: 20px;" src="https://www.svgrepo.com/show/510967/exit.svg" alt="">
+                </div>
+
+            </div>
+            <div class=" tools-detail col-xl-7 col-md-12">
+                <!-- draw -->
+                <div class="tools drawing-tool hide" style="justify-content: space-between;">
+                    <div class="input" style="display: flex; flex-direction: column;">
+                        <div class="common-input ">
+                            <span id="brushSize">Kích thước cọ</span><br>
+                            <input type="range" class="custom-range" id="brushSizeInput" min="0" max="150" value="15">
+                        </div>
+                        <div class="spray-input hide">
+                            <span id="sprayDensity">Mật độ hạt</span><br>
+                            <input type="range" class="custom-range" id="sprayDensityInput" min="1" max="500"
+                                value="20">
+                        </div>
+                    </div>
+                    <div class="subtool" style="display: flex; flex-direction: row; gap: 15px;">
+                        <div data-toggle="tooltip" data-placement="top" title="Pencil"
+                            class="ml-auto sub-tool draw-pencil active" onclick="PencilBrush()">
+                            <img src="https://www.svgrepo.com/show/532979/pen.svg" alt="">
+                        </div>
+                        <div data-toggle="tooltip" data-placement="top" title="Brush" class="sub-tool draw-cirlce"
+                            onclick="CircleBrush()">
+                            <img src="https://www.svgrepo.com/show/502540/brush.svg" alt="">
+                        </div>
+                        <div data-toggle="Spray" data-placement="top" title="Select" class="sub-tool draw-spary"
+                            onclick="SprayBrush()">
+                            <img src="https://www.svgrepo.com/show/152073/spray.svg" alt="">
+                        </div>
+                        <div data-toggle="tooltip" data-placement="top" title="Eraser" class="sub-tool drawing-erase"
+                            onclick="EraserBrush()">
+                            <img src="https://www.svgrepo.com/show/500848/eraser.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <!-- text -->
+                <div class="tools text-tool justify-content-end hide">
+                    <div class="common-input">
+                        <span id="textSize">Kích thước chữ</span><br>
+                        <input type="range" class="custom-range" id="textSizeInput" min="0" max="150" value="15">
+                    </div>
+                    <div class="common-input">
+                        <span id="textFont">Font chữ</span><br>
+                        <select id="textFontInput">
+                            <option value="Arial">Arial</option>
+                            <option value="Arial Black">Arial Black</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Lucida Console">Lucida Console</option>
+                            <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                            <option value="Palatino Linotype">Palatino Linotype</option>
+                            <option value="Tahoma">Tahoma</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Trebuchet MS">Trebuchet MS</option>
+                            <option value="Verdana">Verdana</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- shape -->
+                <div class="tools shape-tool justify-content-end hide">
+                    <div class="ml-auto sub-tool draw-pencil active" onclick="DrawCircle()">
+                        <img src="https://www.svgrepo.com/show/532681/circle.svg" alt="">
+                    </div>
+                    <div class="sub-tool draw-cirlce" onclick="DrawSquare()">
+                        <img src="https://www.svgrepo.com/show/532287/square.svg" alt="">
+                    </div>
+                    <div class="sub-tool draw-spary" onclick="DrawTriangle()">
+                        <img src="https://www.svgrepo.com/show/510286/triangle.svg" alt="">
+                    </div>
+                    <div class="sub-tool drawing-erase" onclick="DrawImage()">
+                        <label for="upload">
+                            <img src="https://www.svgrepo.com/show/522152/image-picture.svg" alt="">
+                        </label>
+                        <input type="file" id="upload" hidden />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+
+    <script src="https://kit.fontawesome.com/ed73cd851d.js" crossorigin="anonymous"></script>
+    <script src="/dist/cropper.js"></script>
+    <script src="/dist/cropper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+    <script src="/fabric.js"></script>
+    <script src="work-with-fabric.js"></script>
+    <script src="/app.js"></script>
+    <script>
+        function displayImageFromGroup() {
+            // Get all objects
+            var objects = canvas.getObjects();
+
+            // Check if there are objects on the canvas
+            if (objects.length > 0) {
+                // Group all objects
+                var group = new fabric.Group(objects, {
+                    originX: 'center',
+                    originY: 'center'
+                });
+
+                // Create an image URL from the group
+                var dataURL = group.toDataURL({
+                    format: 'png',
+                    quality: 1
+                });
+
+                // Display the image in HTML
+                var imgElement = document.getElementById('mainImage');
+                imgElement.src = dataURL;
+                imagePath = dataURL;
+
+                // Ungroup and remove the group from the canvas
+                group.destroy();
+                canvas.remove(group);
+            }
+        }
+
+
+        let save = document.querySelector('.save');
+        save.addEventListener('click', function () {
+            displayImageFromGroup();
+            renderImage();
+            canvas.renderAll();
+            setImage(reader.result);
+            setImageFilter()
+        });
+        if (imagePath) {
+            canvas.clear();
+        }
+
+    </script>
+</body>
+
+</html>

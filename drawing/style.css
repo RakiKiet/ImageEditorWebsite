@@ -1,0 +1,124 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.clear {
+    clear: both;
+    display: table;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+
+
+html {
+    background-color: #1e2122;
+}
+
+.drawing-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 10px solid #000;
+
+}
+
+.tool-bar {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    background-color: #aaa;
+    margin: 0 !important;
+}
+
+#tools {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    background-color: #aaa;
+}
+
+.tools {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+}
+
+.tool,
+.sub-tool {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    box-shadow: .1rem .1rem 0 rgba(0, 0, 0, 0.25);
+    background-color: rgba(242, 242, 242, 0.98);
+    padding: 1px;
+    cursor: pointer;
+}
+
+.tool img,
+.sub-tool img {
+    overflow: hidden;
+    width: 40px;
+    color: #f4f4f4;
+}
+
+.sub-tool img {
+    padding: 5px;
+}
+
+.color-picker {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.color-picker::-moz-color-swatch {
+    border-radius: 50%;
+    border: none;
+}
+
+.color-picker::-webkit-color-swatch {
+    border-radius: 50%;
+    border: none;
+}
+
+.active {
+    box-shadow: 0 0 0 2px #4285f4;
+}
+
+.isWriting {
+    cursor: text;
+}
+
+.hide {
+    display: none !important;
+}
+
+.tools-detail {
+    border-left: 1px solid #ddd;
+}
+
+.shape-tool label {
+    margin: 0 !important;
+    cursor: pointer;
+}
